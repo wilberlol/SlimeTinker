@@ -8,6 +8,7 @@ import io.github.sefiraat.slimetinker.utils.Ids;
 import io.github.sefiraat.slimetinker.utils.ItemUtils;
 import io.github.sefiraat.slimetinker.utils.Keys;
 import io.github.sefiraat.slimetinker.utils.ThemeUtils;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
@@ -47,6 +48,9 @@ public class ToolTable extends TickingMenuBlock {
 
     @Override
     protected void tick(@Nonnull Block block, @Nonnull BlockMenu blockMenu) {
+        if (WorldUtils.isDisabled(block)) {
+            return;
+        }
         previewCraft(blockMenu);
     }
 
@@ -164,6 +168,10 @@ public class ToolTable extends TickingMenuBlock {
 
     protected void craft(BlockMenu blockMenu, Player player) {
 
+        if (WorldUtils.isDisabled(blockMenu.getLocation()) || WorldUtils.isDisabled(player)) {
+            return;
+        }
+
         ItemStack head = blockMenu.getItemInSlot(INPUT_HEAD);
         ItemStack binding = blockMenu.getItemInSlot(INPUT_BINDING);
         ItemStack rod = blockMenu.getItemInSlot(INPUT_ROD);
@@ -219,6 +227,9 @@ public class ToolTable extends TickingMenuBlock {
     protected void onBreak(@Nonnull BlockBreakEvent e, @Nonnull BlockMenu menu) {
         super.onBreak(e, menu);
         Location location = menu.getLocation();
+        if (WorldUtils.isDisabled(location)) {
+            return;
+        }
         menu.dropItems(location, INPUT_HEAD);
         menu.dropItems(location, INPUT_BINDING);
         menu.dropItems(location, INPUT_ROD);
@@ -229,6 +240,9 @@ public class ToolTable extends TickingMenuBlock {
     protected void onNewInstance(@Nonnull BlockMenu blockMenu, @Nonnull Block b) {
         super.onNewInstance(blockMenu, b);
         blockMenu.addMenuClickHandler(CRAFT_BUTTON, (player, i, itemStack, clickAction) -> {
+            if (WorldUtils.isDisabled(player) || WorldUtils.isDisabled(blockMenu.getLocation())) {
+                return false;
+            }
             craft(blockMenu, player);
             return false;
         });

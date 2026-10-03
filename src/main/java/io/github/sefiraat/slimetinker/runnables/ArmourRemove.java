@@ -3,6 +3,7 @@ package io.github.sefiraat.slimetinker.runnables;
 import io.github.sefiraat.slimetinker.SlimeTinker;
 import io.github.sefiraat.slimetinker.utils.ItemUtils;
 import io.github.sefiraat.slimetinker.utils.ThemeUtils;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -15,6 +16,10 @@ public class ArmourRemove extends BukkitRunnable {
     @Override
     public void run() {
         for (Player player : SlimeTinker.getInstance().getServer().getOnlinePlayers()) {
+
+            if (WorldUtils.isDisabled(player)) {
+                continue;
+            }
 
             ItemStack helmet = player.getInventory().getHelmet();
             ItemStack chestplate = player.getInventory().getChestplate();

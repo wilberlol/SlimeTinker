@@ -10,6 +10,7 @@ import io.github.sefiraat.slimetinker.items.tinkermaterials.recipes.MoltenResult
 import io.github.sefiraat.slimetinker.utils.GUIItems;
 import io.github.sefiraat.slimetinker.utils.ItemUtils;
 import io.github.sefiraat.slimetinker.utils.ThemeUtils;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ClickAction;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
@@ -42,18 +43,27 @@ public final class TinkersSmelteryCache extends AbstractCache {
 
         blockMenu.addItem(TinkersSmeltery.PURGE_BUTTON, GUIItems.MENU_PURGE);
         blockMenu.addMenuClickHandler(TinkersSmeltery.PURGE_BUTTON, (player, i, itemStack, clickAction) -> {
+            if (WorldUtils.isDisabled(player) || WorldUtils.isDisabled(blockMenu.getLocation())) {
+                return false;
+            }
             clickPurge(clickAction);
             return false;
         });
 
         blockMenu.addItem(TinkersSmeltery.ALLOY_BUTTON, GUIItems.MENU_ALLOY);
         blockMenu.addMenuClickHandler(TinkersSmeltery.ALLOY_BUTTON, (player, i, itemStack, clickAction) -> {
+            if (WorldUtils.isDisabled(player) || WorldUtils.isDisabled(blockMenu.getLocation())) {
+                return false;
+            }
             clickAlloy();
             return false;
         });
 
         blockMenu.addItem(TinkersSmeltery.POUR_BUTTON, GUIItems.MENU_POUR);
         blockMenu.addMenuClickHandler(TinkersSmeltery.POUR_BUTTON, (player, i, itemStack, clickAction) -> {
+            if (WorldUtils.isDisabled(player) || WorldUtils.isDisabled(blockMenu.getLocation())) {
+                return false;
+            }
             clickPour(player);
             return false;
         });
@@ -106,6 +116,9 @@ public final class TinkersSmelteryCache extends AbstractCache {
     }
 
     public void process(boolean first) {
+        if (WorldUtils.isDisabled(blockMenu.getLocation())) {
+            return;
+        }
         input();
         updateView();
         if (!first) {
@@ -138,6 +151,9 @@ public final class TinkersSmelteryCache extends AbstractCache {
 
             blockMenu.replaceExistingItem(TinkersSmeltery.METAL_INFO, GUIItems.menuMetalInfo(metalPercent, metalLevel, METALS_MAX, tankContent));
             blockMenu.addMenuClickHandler(TinkersSmeltery.METAL_INFO, (player, i, itemStack, clickAction) -> {
+                if (WorldUtils.isDisabled(player) || WorldUtils.isDisabled(blockMenu.getLocation())) {
+                    return false;
+                }
                 clickMetalTank();
                 return false;
             });

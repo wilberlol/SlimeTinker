@@ -1,5 +1,6 @@
 package io.github.sefiraat.slimetinker.runnables;
 
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -26,6 +27,10 @@ public class TrailTick extends BukkitRunnable {
 
             if (player == null) {
                 PLAYERS.remove(uuid);
+                continue;
+            }
+
+            if (WorldUtils.isDisabled(player)) {
                 continue;
             }
 

@@ -4,6 +4,7 @@ import io.github.mooy1.infinitylib.machines.TickingMenuBlock;
 import io.github.sefiraat.slimetinker.items.Materials;
 import io.github.sefiraat.slimetinker.utils.GUIItems;
 import io.github.sefiraat.slimetinker.utils.ThemeUtils;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
@@ -45,6 +46,9 @@ public class TinkersSmeltery extends TickingMenuBlock {
 
     @Override
     protected void tick(Block block, BlockMenu blockMenu) {
+        if (WorldUtils.isDisabled(block)) {
+            return;
+        }
         TinkersSmelteryCache cache = TinkersSmeltery.this.caches.get(block.getLocation());
         if (cache != null) {
             cache.process(false);
@@ -90,6 +94,9 @@ public class TinkersSmeltery extends TickingMenuBlock {
         super.onBreak(event, blockMenu);
         Location location = blockMenu.getLocation();
         TinkersSmelteryCache simpleInventoryCache = caches.remove(location);
+        if (WorldUtils.isDisabled(location)) {
+            return;
+        }
         if (simpleInventoryCache != null) {
             simpleInventoryCache.kill(location);
         }
@@ -122,6 +129,10 @@ public class TinkersSmeltery extends TickingMenuBlock {
     }
 
     private void validateMultiblock(BlockMenu blockMenu, Player player) {
+
+        if (WorldUtils.isDisabled(blockMenu.getLocation()) || WorldUtils.isDisabled(player)) {
+            return;
+        }
 
         // This is garbage - need something better in future - needs to be modular like the real smeltery
         Map<String, Integer> blockMapMaster = new HashMap<>();

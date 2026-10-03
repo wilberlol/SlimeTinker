@@ -20,6 +20,7 @@ import io.github.sefiraat.slimetinker.managers.DispatchManager;
 import io.github.sefiraat.slimetinker.managers.MemoryManager;
 import io.github.sefiraat.slimetinker.managers.TraitManager;
 import io.github.sefiraat.slimetinker.runnables.RunnableManager;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import net.guizhanss.guizhanlibplugin.updater.GuizhanUpdater;
 
@@ -65,6 +66,8 @@ public class SlimeTinker extends JavaPlugin implements SlimefunAddon {
         new Metrics(this, 11748);
 
         instance = this;
+        saveDefaultConfig();
+        WorldUtils.reloadDisabledWorlds();
 
         getLogger().info("########################################");
         getLogger().info("         Slime Tinker  粘液匠魂          ");

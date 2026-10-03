@@ -1,5 +1,6 @@
 package io.github.sefiraat.slimetinker.utils;
 
+import io.github.sefiraat.slimetinker.SlimeTinker;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -10,12 +11,60 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public final class WorldUtils {
 
+    private static volatile Set<String> disabledWorlds = Collections.emptySet();
+
     private WorldUtils() {
         throw new UnsupportedOperationException("Utility Class");
+    }
+
+    /**
+     * 从配置文件重新加载需要禁用 SlimeTinker 的世界。
+     */
+    public static void reloadDisabledWorlds() {
+        SlimeTinker plugin = SlimeTinker.getInstance();
+        if (plugin == null) {
+            disabledWorlds = Collections.emptySet();
+            return;
+        }
+
+        Set<String> worlds = new HashSet<>();
+        for (String world : plugin.getConfig().getStringList("disabled-worlds")) {
+            if (world != null && !world.trim().isEmpty()) {
+                worlds.add(world.trim());
+            }
+        }
+        disabledWorlds = Collections.unmodifiableSet(worlds);
+
+        if (!disabledWorlds.isEmpty()) {
+            plugin.getLogger().info("SlimeTinker 已在以下世界禁用: " + disabledWorlds);
+        }
+    }
+
+    public static boolean isDisabled(@Nullable World world) {
+        return world != null && disabledWorlds.contains(world.getName());
+    }
+
+    public static boolean isDisabled(@Nullable Location location) {
+        return location != null && isDisabled(location.getWorld());
+    }
+
+    public static boolean isDisabled(@Nullable Entity entity) {
+        return entity != null && isDisabled(entity.getWorld());
+    }
+
+    public static boolean isDisabled(@Nullable Player player) {
+        return player != null && isDisabled(player.getWorld());
+    }
+
+    public static boolean isDisabled(@Nullable Block block) {
+        return block != null && isDisabled(block.getWorld());
     }
 
     public static void dropItem(ItemStack i, @Nonnull Player p) {

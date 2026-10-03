@@ -7,6 +7,7 @@ import io.github.sefiraat.slimetinker.utils.Experience;
 import io.github.sefiraat.slimetinker.utils.Ids;
 import io.github.sefiraat.slimetinker.utils.ItemUtils;
 import io.github.sefiraat.slimetinker.utils.ThemeUtils;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -27,6 +28,9 @@ public class PlayerInteractListener implements Listener {
     public void onInteract(PlayerInteractEvent event) {
 
         Player player = event.getPlayer();
+        if (WorldUtils.isDisabled(player)) {
+            return;
+        }
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         EventFriend friend = new EventFriend(player, TraitEventType.INTERACT);
@@ -44,6 +48,9 @@ public class PlayerInteractListener implements Listener {
 
     @EventHandler
     public void onTillOrPath(PlayerInteractEvent event) {
+        if (WorldUtils.isDisabled(event.getPlayer())) {
+            return;
+        }
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             ItemStack itemStack = event.getItem();
             if (eventIsTinkersTillOrPath(itemStack, event.getClickedBlock())) {

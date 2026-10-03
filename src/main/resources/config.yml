@@ -1,2 +1,6 @@
 # 启用自动更新（从构建站自动下载新版本，重启后生效）
 auto-update: true
+
+# 在这些世界中禁用 SlimeTinker 的特性、事件、定时任务和工作台行为。
+# 世界名称区分大小写。
+disabled-worlds: []

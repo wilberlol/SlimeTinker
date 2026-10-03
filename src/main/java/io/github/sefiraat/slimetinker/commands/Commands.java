@@ -7,6 +7,7 @@ import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import co.aikar.commands.annotation.Subcommand;
+import io.github.sefiraat.slimetinker.SlimeTinker;
 import io.github.sefiraat.slimetinker.items.Guide;
 import io.github.sefiraat.slimetinker.items.templates.ArmourDefinition;
 import io.github.sefiraat.slimetinker.items.templates.ToolDefinition;
@@ -14,6 +15,7 @@ import io.github.sefiraat.slimetinker.utils.Experience;
 import io.github.sefiraat.slimetinker.utils.Ids;
 import io.github.sefiraat.slimetinker.utils.ItemUtils;
 import io.github.sefiraat.slimetinker.utils.ThemeUtils;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -35,6 +37,9 @@ public class Commands extends BaseCommand {
     public void tool(CommandSender sender, int amount) {
         if (sender instanceof Player) {
             Player p = (Player) sender;
+            if (WorldUtils.isDisabled(p)) {
+                return;
+            }
             ItemStack i = p.getInventory().getItemInMainHand();
             if (ItemUtils.isTool(i) || ItemUtils.isArmour(i)) {
                 Experience.addExp(i, amount, p, false);
@@ -42,6 +47,15 @@ public class Commands extends BaseCommand {
         } else {
             sender.sendMessage(ThemeUtils.ERROR + "只有玩家才能执行该指令");
         }
+    }
+
+    @Subcommand("Reload")
+    @CommandPermission("SlimeTinker.Admin")
+    @Description("重新加载匠魂配置")
+    public void reload(CommandSender sender) {
+        SlimeTinker.getInstance().reloadConfig();
+        WorldUtils.reloadDisabledWorlds();
+        sender.sendMessage(ThemeUtils.SUCCESS + "匠魂配置已重新加载");
     }
 
     @Subcommand("GenerateItem")
@@ -55,6 +69,9 @@ public class Commands extends BaseCommand {
         public void armour(CommandSender sender, String type, String plateMat, String gambesonMat, String linksMat) {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
+                if (WorldUtils.isDisabled(p)) {
+                    return;
+                }
                 ArmourDefinition armour = new ArmourDefinition(Ids.PLATE, type, plateMat, gambesonMat, linksMat);
                 p.getInventory().addItem(Guide.HELM.getStack(armour));
             } else {
@@ -68,6 +85,9 @@ public class Commands extends BaseCommand {
         public void tool(CommandSender sender, String type, String headMat, String binderMat, String rodMat) {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
+                if (WorldUtils.isDisabled(p)) {
+                    return;
+                }
                 ToolDefinition tool = new ToolDefinition(Ids.HEAD, type, headMat, binderMat, rodMat);
                 if (ItemUtils.isToolExplosive(headMat, rodMat)) {
                     p.getInventory().addItem(Guide.EXP_SHOVEL.getStack(tool));

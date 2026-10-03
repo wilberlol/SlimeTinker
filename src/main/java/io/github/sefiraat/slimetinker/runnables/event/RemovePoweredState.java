@@ -1,6 +1,7 @@
 package io.github.sefiraat.slimetinker.runnables.event;
 
 import io.github.sefiraat.slimetinker.utils.BlockUtils;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -19,6 +20,10 @@ public class RemovePoweredState extends BukkitRunnable {
 
     @Override
     public void run() {
+        if (WorldUtils.isDisabled(block)) {
+            cancel();
+            return;
+        }
         for (Entity e : block.getWorld().getNearbyEntities(block.getLocation(), 1, 1, 1)) {
             if (e instanceof Player) {
                 Player p = (Player) e;

@@ -8,6 +8,7 @@ import io.github.sefiraat.slimetinker.utils.GUIItems;
 import io.github.sefiraat.slimetinker.utils.Ids;
 import io.github.sefiraat.slimetinker.utils.Keys;
 import io.github.sefiraat.slimetinker.utils.ThemeUtils;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -56,12 +57,18 @@ public class ArmourTable extends MenuBlock {
 
             @Override
             public void tick(Block block, SlimefunItem item, Config data) {
+                if (WorldUtils.isDisabled(block)) {
+                    return;
+                }
                 previewCraft();
             }
         });
     }
 
     protected void previewCraft() {
+        if (menu == null || WorldUtils.isDisabled(menu.getLocation())) {
+            return;
+        }
         if (menu.hasViewer()) {
 
             ItemStack plates = menu.getItemInSlot(INPUT_PLATES);
@@ -148,6 +155,9 @@ public class ArmourTable extends MenuBlock {
     }
 
     protected void craft(BlockMenu blockMenu, Player player) {
+        if (WorldUtils.isDisabled(blockMenu.getLocation()) || WorldUtils.isDisabled(player)) {
+            return;
+        }
         ItemStack plates = blockMenu.getItemInSlot(INPUT_PLATES);
         ItemStack gambeson = blockMenu.getItemInSlot(INPUT_GAMBESON);
         ItemStack links = blockMenu.getItemInSlot(INPUT_MAIL_LINK);
@@ -207,6 +217,9 @@ public class ArmourTable extends MenuBlock {
     protected void onBreak(@Nonnull BlockBreakEvent event, @Nonnull BlockMenu blockMenu) {
         super.onBreak(event, blockMenu);
         Location location = blockMenu.getLocation();
+        if (WorldUtils.isDisabled(location)) {
+            return;
+        }
         blockMenu.dropItems(location, INPUT_PLATES);
         blockMenu.dropItems(location, INPUT_GAMBESON);
         blockMenu.dropItems(location, INPUT_MAIL_LINK);
@@ -218,6 +231,9 @@ public class ArmourTable extends MenuBlock {
         super.onNewInstance(blockMenu, b);
         this.menu = blockMenu;
         blockMenu.addMenuClickHandler(CRAFT_BUTTON, (player, i, itemStack, clickAction) -> {
+            if (WorldUtils.isDisabled(player) || WorldUtils.isDisabled(blockMenu.getLocation())) {
+                return false;
+            }
             craft(blockMenu, player);
             return false;
         });

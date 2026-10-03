@@ -3,6 +3,7 @@ package io.github.sefiraat.slimetinker.listeners;
 import io.github.sefiraat.slimetinker.events.friend.EventFriend;
 import io.github.sefiraat.slimetinker.events.friend.TraitEventType;
 import io.github.sefiraat.slimetinker.modifiers.Modifications;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -34,6 +35,12 @@ public class PlayerDamagedListener implements Listener {
 
         Player player = (Player) event.getEntity();
 
+        if (WorldUtils.isDisabled(player)
+            || (event instanceof EntityDamageByEntityEvent
+            && WorldUtils.isDisabled(((EntityDamageByEntityEvent) event).getDamager()))) {
+            return;
+        }
+
         EventFriend friend = new EventFriend(player, TraitEventType.PLAYER_DAMAGED);
 
         friend.setCause(event.getCause());
@@ -62,6 +69,10 @@ public class PlayerDamagedListener implements Listener {
         }
 
         Player player = (Player) event.getEntity();
+
+        if (WorldUtils.isDisabled(player) || WorldUtils.isDisabled(event.getDamager())) {
+            return;
+        }
 
         EventFriend friend = new EventFriend(player, TraitEventType.PLAYER_DAMAGED);
 

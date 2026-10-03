@@ -27,6 +27,10 @@ public class KingsmanSpam extends BukkitRunnable {
 
     @Override
     public void run() {
+        if (WorldUtils.isDisabled(l)) {
+            cancel();
+            return;
+        }
         if (runs <= 0) {
             this.cancel();
         } else {

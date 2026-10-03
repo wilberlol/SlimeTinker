@@ -4,6 +4,7 @@ import io.github.sefiraat.slimetinker.events.friend.EventFriend;
 import io.github.sefiraat.slimetinker.events.friend.TraitEventType;
 import io.github.sefiraat.slimetinker.modifiers.Modifications;
 import io.github.sefiraat.slimetinker.utils.EntityUtils;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -30,6 +31,9 @@ public class EntityDamagedListener implements Listener {
     @SuppressWarnings("unused")
     @EventHandler
     public void onEntityDamaged(EntityDamageByEntityEvent event) {
+        if (WorldUtils.isDisabled(event.getEntity()) || WorldUtils.isDisabled(event.getDamager())) {
+            return;
+        }
         if (isInvalidEvent(event)) {
             return;
         }

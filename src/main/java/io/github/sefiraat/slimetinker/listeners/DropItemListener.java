@@ -2,6 +2,7 @@ package io.github.sefiraat.slimetinker.listeners;
 
 import io.github.sefiraat.slimetinker.utils.ItemUtils;
 import io.github.sefiraat.slimetinker.utils.ThemeUtils;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,7 +14,8 @@ public class DropItemListener implements Listener {
     @SuppressWarnings("unused")
     @EventHandler
     public void onDropItem(PlayerDropItemEvent event) {
-        if (!Slimefun.getWorldSettingsService().isWorldEnabled(event.getPlayer().getWorld())) {
+        if (WorldUtils.isDisabled(event.getPlayer())
+            || !Slimefun.getWorldSettingsService().isWorldEnabled(event.getPlayer().getWorld())) {
             return;
         }
 

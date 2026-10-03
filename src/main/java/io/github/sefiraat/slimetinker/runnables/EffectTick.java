@@ -6,6 +6,7 @@ import io.github.sefiraat.slimetinker.events.friend.EventFriend;
 import io.github.sefiraat.slimetinker.events.friend.TraitEventType;
 import io.github.sefiraat.slimetinker.modifiers.Modifications;
 import io.github.sefiraat.slimetinker.utils.ItemUtils;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -26,6 +27,9 @@ public class EffectTick extends BukkitRunnable {
     @Override
     public void run() {
         for (Player player : SlimeTinker.getInstance().getServer().getOnlinePlayers()) {
+            if (WorldUtils.isDisabled(player)) {
+                continue;
+            }
             ItemStack heldItem = player.getInventory().getItemInMainHand();
 
             Map<PotionEffectType, Integer> potionEffects = new HashMap<>();

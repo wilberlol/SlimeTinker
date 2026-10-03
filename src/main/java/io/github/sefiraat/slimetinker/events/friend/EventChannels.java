@@ -8,6 +8,7 @@ import io.github.sefiraat.slimetinker.utils.Experience;
 import io.github.sefiraat.slimetinker.utils.Ids;
 import io.github.sefiraat.slimetinker.utils.ItemUtils;
 import io.github.sefiraat.slimetinker.utils.ThemeUtils;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -23,6 +24,9 @@ public final class EventChannels {
     }
 
     public static void settlePotionEffects(EventFriend friend) {
+        if (WorldUtils.isDisabled(friend.getPlayer())) {
+            return;
+        }
         Player p = friend.getPlayer();
         for (Map.Entry<PotionEffectType, Integer> entry : friend.getPotionEffects().entrySet()) {
             boolean resetHealth = false;
@@ -62,6 +66,10 @@ public final class EventChannels {
     }
 
     public static void checkTool(EventFriend friend) {
+
+        if (WorldUtils.isDisabled(friend.getPlayer())) {
+            return;
+        }
 
         ItemStack i = friend.getPlayer().getInventory().getItemInMainHand();
 
@@ -109,6 +117,9 @@ public final class EventChannels {
     }
 
     public static void checkArmour(EventFriend friend) {
+        if (WorldUtils.isDisabled(friend.getPlayer())) {
+            return;
+        }
         if (!friend.isCancelEvent()) {
             checkHelm(friend);
             checkChestplate(friend);
@@ -118,6 +129,10 @@ public final class EventChannels {
     }
 
     public static void checkHelm(EventFriend friend) {
+
+        if (WorldUtils.isDisabled(friend.getPlayer())) {
+            return;
+        }
 
         ItemStack i = friend.getPlayer().getInventory().getHelmet();
 
@@ -134,6 +149,10 @@ public final class EventChannels {
 
     public static void checkChestplate(EventFriend friend) {
 
+        if (WorldUtils.isDisabled(friend.getPlayer())) {
+            return;
+        }
+
         ItemStack i = friend.getPlayer().getInventory().getChestplate();
 
         if (!ItemUtils.isArmour(i) || (ItemUtils.isTinkersBroken(i) && ItemUtils.doesNotWorkWhenBroken(i))) {
@@ -148,6 +167,10 @@ public final class EventChannels {
     }
 
     public static void checkLeggings(EventFriend friend) {
+
+        if (WorldUtils.isDisabled(friend.getPlayer())) {
+            return;
+        }
 
         ItemStack i = friend.getPlayer().getInventory().getLeggings();
 
@@ -164,6 +187,10 @@ public final class EventChannels {
 
     public static void checkBoots(EventFriend friend) {
 
+        if (WorldUtils.isDisabled(friend.getPlayer())) {
+            return;
+        }
+
         ItemStack i = friend.getPlayer().getInventory().getBoots();
 
         if (!ItemUtils.isArmour(i) || (ItemUtils.isTinkersBroken(i) && ItemUtils.doesNotWorkWhenBroken(i))) {
@@ -178,6 +205,10 @@ public final class EventChannels {
     }
 
     public static void checkArmourPiece(EventFriend friend) {
+
+        if (WorldUtils.isDisabled(friend.getPlayer())) {
+            return;
+        }
 
         ItemStack i = friend.getActiveStack();
 
@@ -204,6 +235,10 @@ public final class EventChannels {
     }
 
     public static void provideKillExp(EventFriend friend, int baseAmount) {
+
+        if (WorldUtils.isDisabled(friend.getPlayer())) {
+            return;
+        }
 
         ItemStack tool = friend.getTool();
         ItemStack helm = friend.getHelmet();

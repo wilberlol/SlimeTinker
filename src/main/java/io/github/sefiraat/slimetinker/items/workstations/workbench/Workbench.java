@@ -5,6 +5,7 @@ import io.github.sefiraat.slimetinker.items.Workstations;
 import io.github.sefiraat.slimetinker.utils.GUIItems;
 import io.github.sefiraat.slimetinker.utils.ItemUtils;
 import io.github.sefiraat.slimetinker.utils.Keys;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
@@ -43,6 +44,9 @@ public class Workbench extends CraftingBlock {
     protected void onBreak(@Nonnull BlockBreakEvent event, @Nonnull BlockMenu blockMenu) {
         super.onBreak(event, blockMenu);
         Location location = blockMenu.getLocation();
+        if (WorldUtils.isDisabled(location)) {
+            return;
+        }
         blockMenu.dropItems(location, INPUT_SLOTS);
         blockMenu.dropItems(location, OUTPUT_SLOT);
     }
@@ -51,6 +55,9 @@ public class Workbench extends CraftingBlock {
     protected void onNewInstance(@Nonnull BlockMenu menu, @Nonnull Block b) {
         super.onNewInstance(menu, b);
         menu.addMenuClickHandler(CRAFT_BUTTON, (player, i, itemStack, clickAction) -> {
+            if (WorldUtils.isDisabled(player) || WorldUtils.isDisabled(menu.getLocation())) {
+                return false;
+            }
             craft(b, menu, player);
             return false;
         });

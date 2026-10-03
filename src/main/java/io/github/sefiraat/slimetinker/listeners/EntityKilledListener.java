@@ -7,6 +7,7 @@ import io.github.sefiraat.slimetinker.modifiers.Modifications;
 import io.github.sefiraat.slimetinker.utils.EntityUtils;
 import io.github.sefiraat.slimetinker.utils.Experience;
 import io.github.sefiraat.slimetinker.utils.ItemUtils;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -39,6 +40,10 @@ public class EntityKilledListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player p = event.getEntity();
+        if (WorldUtils.isDisabled(p)) {
+            heldItems.remove(p);
+            return;
+        }
         List<ItemStack> list = new ArrayList<>();
         if (heldItems.containsKey(p)) {
             list.addAll(heldItems.get(p));
@@ -60,6 +65,10 @@ public class EntityKilledListener implements Listener {
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player p = event.getPlayer();
+        if (WorldUtils.isDisabled(p)) {
+            heldItems.remove(p);
+            return;
+        }
         if (heldItems.containsKey(p)) {
             for (ItemStack i : heldItems.get(p)) {
                 p.getInventory().addItem(i);
@@ -73,7 +82,10 @@ public class EntityKilledListener implements Listener {
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity dyingEntity = event.getEntity();
 
-        if (dyingEntity.getKiller() == null || isInvalidEvent(event)) {
+        if (WorldUtils.isDisabled(dyingEntity)
+            || (dyingEntity.getKiller() != null && WorldUtils.isDisabled(dyingEntity.getKiller()))
+            || dyingEntity.getKiller() == null
+            || isInvalidEvent(event)) {
             return;
         }
 

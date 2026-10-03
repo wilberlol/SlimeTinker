@@ -7,6 +7,7 @@ import io.github.sefiraat.slimetinker.modifiers.Modifications;
 import io.github.sefiraat.slimetinker.utils.GUIItems;
 import io.github.sefiraat.slimetinker.utils.ItemUtils;
 import io.github.sefiraat.slimetinker.utils.ThemeUtils;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
@@ -37,6 +38,9 @@ public class ModificationStation extends MenuBlock {
     }
 
     protected void craft(BlockMenu blockMenu, Player player) {
+        if (WorldUtils.isDisabled(blockMenu.getLocation()) || WorldUtils.isDisabled(player)) {
+            return;
+        }
         ItemStack item = blockMenu.getItemInSlot(INPUT_TOOL);
         ItemStack modItem = blockMenu.getItemInSlot(INPUT_MOD);
 
@@ -205,6 +209,9 @@ public class ModificationStation extends MenuBlock {
     protected void onBreak(@Nonnull BlockBreakEvent event, @Nonnull BlockMenu blockMenu) {
         super.onBreak(event, blockMenu);
         Location location = blockMenu.getLocation();
+        if (WorldUtils.isDisabled(location)) {
+            return;
+        }
         blockMenu.dropItems(location, INPUT_TOOL);
         blockMenu.dropItems(location, INPUT_MOD);
         blockMenu.dropItems(location, OUTPUT_SLOT);
@@ -214,6 +221,9 @@ public class ModificationStation extends MenuBlock {
     protected void onNewInstance(@Nonnull BlockMenu blockMenu, @Nonnull Block b) {
         super.onNewInstance(blockMenu, b);
         blockMenu.addMenuClickHandler(MOD_BUTTON, (player, i, itemStack, clickAction) -> {
+            if (WorldUtils.isDisabled(player) || WorldUtils.isDisabled(blockMenu.getLocation())) {
+                return false;
+            }
             craft(blockMenu, player);
             return false;
         });

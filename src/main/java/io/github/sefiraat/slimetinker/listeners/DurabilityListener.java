@@ -8,6 +8,7 @@ import io.github.sefiraat.slimetinker.modifiers.Modifications;
 import io.github.sefiraat.slimetinker.utils.GeneralUtils;
 import io.github.sefiraat.slimetinker.utils.Ids;
 import io.github.sefiraat.slimetinker.utils.ItemUtils;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemBreakEvent;
@@ -31,6 +32,9 @@ public class DurabilityListener implements Listener {
     @SuppressWarnings("unused")
     @EventHandler
     public void onItemDamage(PlayerItemDamageEvent event) {
+        if (WorldUtils.isDisabled(event.getPlayer())) {
+            return;
+        }
         ItemStack damagedItem = event.getItem();
         EventFriend friend = new EventFriend(event.getPlayer(), TraitEventType.DURABILITY);
         String armourTypeName = ItemUtils.getArmourTypeName(damagedItem);
@@ -86,6 +90,9 @@ public class DurabilityListener implements Listener {
     @SuppressWarnings("unused")
     @EventHandler
     public void onItemBreak(PlayerItemBreakEvent event) { // Covering my bases here for anything else that can break a tool, may not be required?
+        if (WorldUtils.isDisabled(event.getPlayer())) {
+            return;
+        }
         ItemStack damagedItem = event.getBrokenItem();
         if (!ItemUtils.isTool(damagedItem)) { // Not a tool, moving on!
             return;

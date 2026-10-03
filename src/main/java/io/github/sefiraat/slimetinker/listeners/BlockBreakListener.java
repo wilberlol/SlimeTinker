@@ -9,6 +9,7 @@ import io.github.sefiraat.slimetinker.utils.Experience;
 import io.github.sefiraat.slimetinker.utils.Ids;
 import io.github.sefiraat.slimetinker.utils.ItemUtils;
 import io.github.sefiraat.slimetinker.utils.Keys;
+import io.github.sefiraat.slimetinker.utils.WorldUtils;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import org.bukkit.Color;
@@ -42,6 +43,10 @@ public class BlockBreakListener implements Listener {
     @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
+
+        if (WorldUtils.isDisabled(event.getBlock())) {
+            return;
+        }
 
         Player player = event.getPlayer();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
@@ -98,6 +103,9 @@ public class BlockBreakListener implements Listener {
     @SuppressWarnings("unused")
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onDrops(BlockDropItemEvent event) {
+        if (WorldUtils.isDisabled(event.getBlock())) {
+            return;
+        }
         Block block = event.getBlock();
         Location location = block.getLocation();
         EventFriend friend = EVENT_FRIEND_MAP.remove(location);
