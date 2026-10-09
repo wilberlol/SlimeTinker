@@ -116,6 +116,9 @@ public final class Experience {
     }
 
     private static void silverChecks(ItemStack itemStack, ItemMeta im, Player player) {
+        if (EnchantGrowth.isDisabled()) {
+            return;
+        }
         if (ItemUtils.isEnchanting(itemStack)) {
             int number = ItemUtils.isEnchanting2(itemStack) ? 3 : 1;
             int amount = ThreadLocalRandom.current().nextInt(1, number + 1);

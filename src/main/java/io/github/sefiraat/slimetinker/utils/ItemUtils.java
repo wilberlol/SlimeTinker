@@ -682,6 +682,9 @@ public final class ItemUtils {
     }
 
     public static void incrementRandomEnchant(ItemStack i, ItemMeta im) {
+        if (EnchantGrowth.isDisabled()) {
+            return;
+        }
         Enchantment randEnchant = Enchantment.values()[(GeneralUtils.roll(Enchantment.values().length, false))];
         if (im.hasEnchant(randEnchant)) {
             im.addEnchant(randEnchant, i.getEnchantmentLevel(randEnchant) + 1, true);

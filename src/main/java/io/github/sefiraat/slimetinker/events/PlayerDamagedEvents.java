@@ -1,5 +1,6 @@
 package io.github.sefiraat.slimetinker.events;
 
+import io.github.sefiraat.slimetinker.utils.EnchantGrowth;
 import io.github.sefiraat.slimetinker.SlimeTinker;
 import io.github.sefiraat.slimetinker.events.friend.EventFriend;
 import io.github.sefiraat.slimetinker.items.Materials;
@@ -486,6 +487,9 @@ public final class PlayerDamagedEvents {
     }
 
     public static void plateSingInfinity(EventFriend friend) {
+        if (EnchantGrowth.isDisabled()) {
+            return;
+        }
         ItemStack i = friend.getActiveStack();
         ItemMeta im = i.getItemMeta();
         NamespacedKey k = Keys.ARMOUR_INFINITLY_POWERFUL_STORED;

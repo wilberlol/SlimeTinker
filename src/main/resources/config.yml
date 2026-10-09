@@ -1,6 +1,12 @@
 # 启用自动更新（从构建站自动下载新版本，重启后生效）
-auto-update: true
+auto-update: false
 
 # 在这些世界中禁用 SlimeTinker 的特性、事件、定时任务和工作台行为。
 # 世界名称区分大小写。
 disabled-worlds: []
+
+# 停用所有「會讓附魔等級成長」的特性：
+#  - 白銀「附魔 / 附魔 II」（工具／防具升級時獲得隨機附魔）
+#  - 無限奇異點裝甲板「无尽力量」（累積承受傷害後獲得隨機附魔）
+# true = 停用（預設）；false = 恢復原版行為。
+disable-enchant-growth: true

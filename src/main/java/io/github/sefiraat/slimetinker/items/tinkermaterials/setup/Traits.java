@@ -1,5 +1,6 @@
 package io.github.sefiraat.slimetinker.items.tinkermaterials.setup;
 
+import io.github.sefiraat.slimetinker.utils.EnchantGrowth;
 import io.github.sefiraat.slimetinker.events.BlockBreakEvents;
 import io.github.sefiraat.slimetinker.events.DurabilityEvents;
 import io.github.sefiraat.slimetinker.events.EntityDamageEvents;
@@ -184,7 +185,7 @@ public final class Traits {
         .setLore(
             "-50% 工具经验获取",
             "",
-            "工具升级时获得随机附魔",
+            EnchantGrowth.lore("工具升级时获得随机附魔"),
             "附魔可能并不适用于该工具"
         );
 
@@ -214,7 +215,7 @@ public final class Traits {
         .setAddedBy(SupportedPluginsManager.CORE_NOTE)
         .setTraitName("附魔")
         .setLore(
-            "防具升级时获得随机附魔",
+            EnchantGrowth.lore("防具升级时获得随机附魔"),
             "附魔可能并不适用于该防具"
         );
 
@@ -1572,7 +1573,7 @@ public final class Traits {
         .setTraitName("附魔 II")
         .setLore(
             "-50% 工具经验获取",
-            "工具升级时获得1-3个随机附魔",
+            EnchantGrowth.lore("工具升级时获得1-3个随机附魔"),
             "附魔可能并不适用于该工具"
         );
 
@@ -1602,7 +1603,7 @@ public final class Traits {
         .setAddedBy(SupportedPluginsManager.INFINITY_EXPANSION_NOTE)
         .setTraitName("附魔 II")
         .setLore(
-            "防具升级时获得1-3个随机附魔",
+            EnchantGrowth.lore("防具升级时获得1-3个随机附魔"),
             "附魔可能并不适用于该防具"
         );
 
@@ -2115,7 +2116,7 @@ public final class Traits {
         .setTraitName("无尽力量")
         .setLore(
             "每承受2000点伤害(减伤计算前)",
-            "可以获得一个新的随机附魔",
+            EnchantGrowth.lore("可以获得一个新的随机附魔"),
             "无等级上限"
         )
         .addConsumer(TraitEventType.PLAYER_DAMAGED, PlayerDamagedEvents::plateSingInfinity);
